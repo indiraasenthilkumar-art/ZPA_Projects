@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ZPA Least Privilege Access Simulation</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+color:white;
+min-height:100vh;
+}
+
+/* FRONT PAGE */
+
+#frontPage{
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+height:100vh;
+text-align:center;
+padding:20px;
+background:#102a43;
+}
+
+#frontPage h1{
+font-size:55px;
+margin-bottom:20px;
+color:#00e5ff;
+text-shadow:0 0 10px black;
+}
+
+#frontPage p{
+max-width:750px;
+margin-bottom:35px;
+font-size:18px;
+line-height:1.7;
+background:rgba(0,0,0,0.5);
+padding:20px;
+border-radius:12px;
+}
+
+.startBtn{
+padding:16px 40px;
+border:none;
+border-radius:30px;
+background:linear-gradient(45deg,#00e5ff,#00bcd4);
+font-size:20px;
+cursor:pointer;
+font-weight:bold;
+color:black;
+box-shadow:0 0 20px #00e5ff;
+transition:0.3s;
+}
+
+.startBtn:hover{
+transform:scale(1.05);
+}
+
+/* LOGIN PAGE */
+
+.login-page{
+display:none;
+justify-content:center;
+align-items:center;
+height:100vh;
+background:#1b262c;
+}
+
+.login-box{
+background:rgba(0,0,0,0.65);
+padding:45px;
+border-radius:15px;
+width:340px;
+text-align:center;
+backdrop-filter:blur(10px);
+box-shadow:0 0 25px black;
+}
+
+.login-box h2{
+margin-bottom:20px;
+color:#00e5ff;
+}
+
+.login-box input{
+width:100%;
+padding:13px;
+margin:10px 0;
+border:none;
+border-radius:8px;
+}
+
+.login-box button{
+width:100%;
+padding:12px;
+border:none;
+border-radius:8px;
+background:#00e5ff;
+font-weight:600;
+cursor:pointer;
+}
+
+.login-box button:hover{
+background:#00bcd4;
+}
+
+#error{
+margin-top:10px;
+color:red;
+}
+
+/* DASHBOARD */
+
+#mainPage{
+display:none;
+flex-direction:column;
+min-height:100vh;
+background:#111;
+}
+
+/* NAVBAR */
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 50px;
+background:linear-gradient(90deg,#000428,#004e92);
+box-shadow:0 4px 10px black;
+}
+
+nav h1{
+color:#00e5ff;
+}
+
+nav a{
+color:white;
+margin-left:20px;
+text-decoration:none;
+font-weight:500;
+}
+
+/* HERO */
+
+.hero{
+text-align:center;
+padding:70px 20px;
+background:#243b55;
+}
+
+.hero h2{
+font-size:38px;
+margin-bottom:15px;
+}
+
+.hero p{
+max-width:850px;
+margin:auto;
+line-height:1.7;
+background:rgba(0,0,0,0.6);
+padding:20px;
+border-radius:12px;
+}
+
+/* CARDS */
+
+.container{
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:35px;
+padding:50px;
+}
+
+.card{
+background:linear-gradient(145deg,#1f1f1f,#2c2c2c);
+border-radius:18px;
+padding:35px;
+width:280px;
+text-align:center;
+transition:0.3s;
+box-shadow:0 0 20px black;
+}
+
+.card:hover{
+transform:translateY(-12px) scale(1.03);
+box-shadow:0 0 25px #00e5ff;
+}
+
+.card i{
+font-size:45px;
+margin-bottom:15px;
+color:#00e5ff;
+}
+
+.card h3{
+color:#00e5ff;
+margin-bottom:10px;
+}
+
+button{
+margin-top:15px;
+padding:10px 20px;
+border:none;
+border-radius:8px;
+background:#00e5ff;
+cursor:pointer;
+font-weight:bold;
+}
+
+button:hover{
+background:#00bcd4;
+}
+
+/* RESULT PAGE */
+
+#accessPage{
+display:none;
+justify-content:center;
+align-items:center;
+height:100vh;
+text-align:center;
+background:#0f3460;
+}
+
+.access-box{
+background:rgba(0,0,0,0.75);
+padding:45px;
+border-radius:18px;
+width:420px;
+box-shadow:0 0 25px black;
+}
+
+#result{
+font-size:20px;
+margin-top:20px;
+font-weight:bold;
+}
+
+.host{
+margin-top:25px;
+}
+
+.host a{
+background:#4caf50;
+padding:12px 20px;
+border-radius:8px;
+color:white;
+text-decoration:none;
+}
+
+.back{
+margin-top:20px;
+display:inline-block;
+background:#00e5ff;
+padding:10px 20px;
+border-radius:8px;
+text-decoration:none;
+color:black;
+}
+
+footer{
+margin-top:auto;
+text-align:center;
+padding:20px;
+background:#000;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="frontPage">
+
+<h1>Zscaler Private Access (ZPA)</h1>
+
+<p>
+Zscaler Private Access (ZPA) is a cloud-delivered Zero Trust Network Access
+solution designed to provide secure connectivity to internal applications
+without exposing the corporate network to the internet.
+</p>
+
+<button class="startBtn" onclick="openLogin()">Get Started</button>
+
+</div>
+
+
+<div class="login-page" id="loginPage">
+
+<div class="login-box">
+
+<h2><i class="fa-solid fa-shield-halved"></i> ZPA Secure Login</h2>
+
+<input type="text" id="username" placeholder="Username">
+<input type="password" id="password" placeholder="Password">
+
+<button onclick="login()">Login</button>
+
+<p id="error"></p>
+
+</div>
+
+</div>
+
+
+<div id="mainPage">
+
+<nav>
+
+<h1>ZPA Security Dashboard</h1>
+
+<div>
+<a href="#">Home</a>
+<a href="#">Policies</a>
+<a href="#">Simulation</a>
+</div>
+
+</nav>
+
+
+<section class="hero">
+
+<h2>Least Privilege Access using Zscaler Private Access</h2>
+
+<p>
+This simulation demonstrates how ZPA enforces role-based access control.
+Different users such as Administrators, Employees, and Guests receive
+different levels of access based on predefined security policies.
+</p>
+
+</section>
+
+
+<div class="container">
+
+<div class="card">
+
+<i class="fa-solid fa-user"></i>
+
+<h3>Employee</h3>
+
+<p>
+Employees are granted access only to internal applications required
+for their work activities.
+</p>
+
+<button onclick="checkAccess('employee')">Login as Employee</button>
+
+</div>
+
+
+<div class="card">
+
+<i class="fa-solid fa-user-shield"></i>
+
+<h3>Admin</h3>
+
+<p>
+Administrators manage applications and security policies within
+the ZPA environment.
+</p>
+
+<button onclick="checkAccess('admin')">Login as Admin</button>
+
+</div>
+
+
+<div class="card">
+
+<i class="fa-solid fa-user-lock"></i>
+
+<h3>Guest</h3>
+
+<p>
+Guest users do not have permission to access protected enterprise
+applications.
+</p>
+
+<button onclick="checkAccess('guest')">Login as Guest</button>
+
+</div>
+
+</div>
+
+<footer>
+
+<p>
+Zero Trust Security Simulation | Zscaler Private Access (ZPA)
+</p>
+
+</footer>
+
+</div>
+
+
+<div id="accessPage">
+
+<div class="access-box">
+
+<h2>Zero Trust Access Decision</h2>
+
+<p id="result"></p>
+
+<div class="host">
+
+</div>
+
+<br>
+
+<a href="#" class="back" onclick="goBack()">⬅ Back to Dashboard</a>
+
+</div>
+
+</div>
+
+
+<script>
+
+function openLogin(){
+document.getElementById("frontPage").style.display="none";
+document.getElementById("loginPage").style.display="flex";
+}
+
+function login(){
+
+let user=document.getElementById("username").value;
+let pass=document.getElementById("password").value;
+let error=document.getElementById("error");
+
+if(user==="admin" && pass==="admin123"){
+
+document.getElementById("loginPage").style.display="none";
+document.getElementById("mainPage").style.display="flex";
+
+}
+else{
+
+error.innerHTML="Invalid Login";
+
+}
+
+}
+
+function checkAccess(role){
+
+let result=document.getElementById("result");
+
+document.getElementById("mainPage").style.display="none";
+document.getElementById("accessPage").style.display="flex";
+
+if(role==="admin"){
+
+result.innerHTML="Access Granted : Administrator has full access.";
+result.style.color="lightgreen";
+
+}
+
+else if(role==="employee"){
+
+result.innerHTML="Access Granted : Employee has limited access.";
+result.style.color="yellow";
+
+}
+
+else{
+
+result.innerHTML="Access Denied : Guest blocked by Zero Trust.";
+result.style.color="red";
+
+}
+
+}
+
+function goBack(){
+
+document.getElementById("accessPage").style.display="none";
+document.getElementById("mainPage").style.display="flex";
+
+}
+
+</script>
+
+</body>
+</html>
